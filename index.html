@@ -641,10 +641,17 @@
             }
         }
         function clearMessage() {
-            currentMessage = [];
-            updateMessageDisplay();
-            showToast('Message cleared');
-        }
+    currentMessage = '';
+    document.getElementById('currentMessage').textContent = 'Tap phrases to build your message';
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.phrase-btn').forEach(btn => btn.classList.remove('active'));
+    // Reselect default category
+    let defaultBtn = document.querySelector('.category-btn[onclick*="basic"]');
+    if (defaultBtn) {
+        defaultBtn.classList.add('active');
+        showCategory('basic');
+    }
+}
         function copyMessage() {
             const message = currentMessage.join(' ');
             if (message) {
