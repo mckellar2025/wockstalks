@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>AAC Messaging App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .message-display {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            min-height: 120px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 3px solid #e2e8f0;
+        }
+
+        .current-message {
+            font-size: 2rem;
+            line-height: 1.4;
+            color: #2d3748;
+            min-height: 60px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border: 2px dashed #cbd5e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .message-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 15px 25px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            min-width: 120px;
+        }
+
+        .speak-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 15px 25px;
+            font-size: 1.4rem;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .phrases-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .phrases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .phrase-btn {
+            padding: 25px 20px;
+            font-size: 1.5rem;
+            border: 3px solid #e2e8f0;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #2d3748;
+            text-align: center;
+            line-height: 1.3;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phrase-btn:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: #667eea;
+        }
+
+        .phrase-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .current-message {
+                font-size: 1.5rem;
+            }
+            
+            .phrase-btn {
+                font-size: 1.3rem;
+                padding: 20px 15px;
+            }
+            
+            .phrases-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .phrases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 90%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Communication Helper</h1>
+    </div>
+
+    <div class="message-display">
+        <div class="current-message" id="currentMessage">
+            Tap phrases to build your message
+        </div>
+        <div class="message-controls">
+            <button class="control-btn speak-btn" onclick="speakMessage()">🔊 Speak</button>
+            <button class="control-btn clear-btn" onclick="clearMessage()">🗑️ Clear</button>
+            <button class="control-btn copy-btn" onclick="copyMessage()">📋 Copy</button>
+        </div>
+    </div>
+
+    <div class="categories">
+        <button class="category-btn active" onclick="showCategory('basic')">Basic Needs</button>
+        <button class="category-btn" onclick="showCategory('feelings')">Feelings</button>
+        <button class="category-btn" onclick="showCategory('help')">Help & Care</button>
+        <button class="category-btn" onclick="showCategory('people')">People</button>
+        <button class="category-btn" onclick="showCategory('questions')">Who/What/Where/When</button>
+        <button class="category-btn" onclick="showCategory('social')">Social</button>
+    </div>
+
+    <div class="phrases-container">
+        <div class="phrases-grid" id="phrasesGrid">
+            <!-- Phrases will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let currentMessage = [];
+        let currentCategory = 'basic';
+
+        const phrases = {
+            basic: [
+                "I need help",
+                "I'm hungry",
+                "I'm thirsty",
+                "I need to use the bathroom",
+                "I'm tired",
+                "I'm in pain",
+                "I'm cold",
+                "I'm hot",
+                "Yes",
+                "No",
+                "Please",
+                "Thank you",
+                "I don't understand"
+            ],
+            feelings: [
+                "I'm happy",
+                "I'm sad",
+                "I'm frustrated",
+                "I'm worried",
+                "I'm scared",
+                "I'm angry",
+                "I'm confused",
+                "I'm lonely",
+                "I feel good",
+                "I feel bad",
+                "I'm okay",
+                "I'm not okay"
+            ],
+            help: [
+                "Call my family",
+                "Call the doctor",
+                "I need medicine",
+                "Help me sit up",
+                "Help me lie down",
+                "I can't move my arm",
+                "I can't move my leg",
+                "My head hurts",
+                "I feel dizzy",
+                "I need my glasses",
+                "Turn on the light",
+                "Turn off the light"
+            ],
+            people: [
+                "Donna",
+                "Jason",
+                "Ashlee",
+                "Hayley",
+                "Justin",
+                "Ashley",
+                "Andrew",
+                "Jeff",
+                "Dylan",
+                "Nora",
+                "Clara",
+                "John",
+                "Adam"
+            ],
+            questions: [
+                "Who is",
+                "What is",
+                "Where is",
+                "When is",
+                "Why is",
+                "How is",
+                "Can you",
+                "Will you",
+                "Do you",
+                "Is",
+                "Are",
+                "Was",
+                "Were",
+                "Call",
+                "Get",
+                "Bring",
+                "Take me to",
+                "I want to see",
+                "I want to go",
+                "Tell",
+                "Ask",
+                "Find",
+                "Give me",
+                "Show me"
+            ],
+            social: [
+                "Hello",
+                "Goodbye",
+                "Good morning",
+                "Good night",
+                "How are you?",
+                "I love you",
+                "I miss you",
+                "Come here",
+                "Go away",
+                "Stay with me",
+                "Talk to me",
+                "I want to go home"
+            ]
+        };
+
+        function showCategory(category) {
+            currentCategory = category;
+            
+            // Update category buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update phrases
+            const phrasesGrid = document.getElementById('phrasesGrid');
+            phrasesGrid.innerHTML = '';
+            
+            phrases[category].forEach(phrase => {
+                const btn = document.createElement('button');
+                btn.className = 'phrase-btn';
+                btn.textContent = phrase;
+                btn.onclick = () => addPhrase(phrase);
+                phrasesGrid.appendChild(btn);
+            });
+        }
+
+        function addPhrase(phrase) {
+            currentMessage.push(phrase);
+            updateMessageDisplay();
+            
+            // Visual feedback
+            event.target.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+            event.target.style.color = 'white';
+            setTimeout(() => {
+                event.target.style.background = '';
+                event.target.style.color = '';
+            }, 200);
+        }
+
+        function updateMessageDisplay() {
+            const messageElement = document.getElementById('currentMessage');
+            if (currentMessage.length === 0) {
+                messageElement.textContent = 'Tap phrases to build your message';
+            } else {
+                messageElement.textContent = currentMessage.join(' ');
+            }
+        }
+
+        function speakMessage() {
+            const message = currentMessage.join(' ');
+            if (message) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(message);
+                    utterance.rate = 0.8;
+                    utterance.pitch = 1;
+                    utterance.volume = 1;
+                    speechSynthesis.speak(utterance);
+                    showToast('Speaking message...');
+                } else {
+                    showToast('Speech not supported on this device');
+                }
+            } else {
+                showToast('No message to speak');
+            }
+        }
+
+        function clearMessage() {
+            currentMessage = [];
+            updateMessageDisplay();
+            showToast('Message cleared');
+        }
+
+        function copyMessage() {
+            const message = currentMessage.join(' ');
+            if (message) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(message).then(() => {
+                        showToast('Message copied to clipboard');
+                    }).catch(() => {
+                        showToast('Could not copy message');
+                    });
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = message;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('Message copied to clipboard');
+                    } catch (err) {
+                        showToast('Could not copy message');
+                    }
+                    document.body.removeChild(textArea);
+                }
+            } else {
+                showToast('No message to copy');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            showCategory('basic');
+            
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+
+        // Handle back button on mobile
+        window.addEventListener('beforeunload', function(e) {
+            if (currentMessage.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>
