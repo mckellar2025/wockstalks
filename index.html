@@ -70,14 +70,14 @@
         }
 
         .control-btn {
-            padding: 15px 25px;
-            font-size: 1.3rem;
+            padding: 18px 30px;
+            font-size: 1.5rem;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
-            min-width: 120px;
+            min-width: 140px;
         }
 
         .speak-btn {
@@ -113,8 +113,8 @@
         }
 
         .category-btn {
-            padding: 15px 25px;
-            font-size: 1.4rem;
+            padding: 20px 30px;
+            font-size: 1.6rem;
             border: 3px solid #e2e8f0;
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.9);
@@ -143,15 +143,15 @@
 
         .phrases-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .phrase-btn {
-            padding: 25px 20px;
-            font-size: 1.5rem;
+            padding: 35px 25px;
+            font-size: 1.8rem;
             border: 3px solid #e2e8f0;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.95);
@@ -161,7 +161,7 @@
             color: #2d3748;
             text-align: center;
             line-height: 1.3;
-            min-height: 80px;
+            min-height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -258,11 +258,24 @@
         <button class="category-btn" onclick="showCategory('people')">People</button>
         <button class="category-btn" onclick="showCategory('questions')">Who/What/Where/When</button>
         <button class="category-btn" onclick="showCategory('social')">Social</button>
+        <button class="category-btn edit-btn" onclick="showEditPeople()">✏️ Edit People</button>
     </div>
 
     <div class="phrases-container">
         <div class="phrases-grid" id="phrasesGrid">
             <!-- Phrases will be populated by JavaScript -->
+        </div>
+        
+        <div class="edit-container" id="editContainer" style="display: none;">
+            <h2>Edit People Names</h2>
+            <div class="names-input-grid" id="namesInputGrid">
+                <!-- Name inputs will be populated by JavaScript -->
+            </div>
+            <div class="edit-controls">
+                <button class="control-btn add-person-btn" onclick="addNewPerson()">➕ Add Person</button>
+                <button class="control-btn save-btn" onclick="savePeopleNames()">💾 Save Changes</button>
+                <button class="control-btn cancel-btn" onclick="cancelEdit()">❌ Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -271,6 +284,22 @@
     <script>
         let currentMessage = [];
         let currentCategory = 'basic';
+        let customPeople = [];
+
+        // Default people names
+        const defaultPeople = [
+            "Donna", "Jason", "Ashlee", "Hayley", "Justin", "Ashley", 
+            "Andrew", "Isaac", "Jenn", "Jeff", "Dylan", "Nora", 
+            "Clara", "John", "Adam"
+        ];
+
+        // Load custom people from memory or use defaults
+        function loadPeople() {
+            if (customPeople.length === 0) {
+                customPeople = [...defaultPeople];
+            }
+            return customPeople;
+        }
 
         const phrases = {
             basic: [
@@ -316,21 +345,9 @@
                 "Turn on the light",
                 "Turn off the light"
             ],
-            people: [
-                "Donna",
-                "Jason",
-                "Ashlee",
-                "Hayley",
-                "Justin",
-                "Ashley",
-                "Andrew",
-                "Jeff",
-                "Dylan",
-                "Nora",
-                "Clara",
-                "John",
-                "Adam"
-            ],
+            people: function() {
+                return loadPeople();
+            },
             questions: [
                 "Who is",
                 "What is",
@@ -376,6 +393,10 @@
         function showCategory(category) {
             currentCategory = category;
             
+            // Hide edit container
+            document.getElementById('editContainer').style.display = 'none';
+            document.getElementById('phrasesGrid').style.display = 'grid';
+            
             // Update category buttons
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -386,13 +407,98 @@
             const phrasesGrid = document.getElementById('phrasesGrid');
             phrasesGrid.innerHTML = '';
             
-            phrases[category].forEach(phrase => {
+            const categoryPhrases = typeof phrases[category] === 'function' ? phrases[category]() : phrases[category];
+            
+            categoryPhrases.forEach(phrase => {
                 const btn = document.createElement('button');
                 btn.className = 'phrase-btn';
                 btn.textContent = phrase;
                 btn.onclick = () => addPhrase(phrase);
                 phrasesGrid.appendChild(btn);
             });
+        }
+
+        function showEditPeople() {
+            // Hide phrases grid and show edit container
+            document.getElementById('phrasesGrid').style.display = 'none';
+            document.getElementById('editContainer').style.display = 'block';
+            
+            // Update category buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Populate input fields
+            populateNameInputs();
+        }
+
+        function populateNameInputs() {
+            const container = document.getElementById('namesInputGrid');
+            container.innerHTML = '';
+            
+            const currentPeople = loadPeople();
+            
+            currentPeople.forEach((name, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'name-input';
+                input.value = name;
+                input.placeholder = `Person ${index + 1}`;
+                input.dataset.index = index;
+                container.appendChild(input);
+            });
+        }
+
+        function addNewPerson() {
+            const container = document.getElementById('namesInputGrid');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'name-input';
+            input.value = '';
+            input.placeholder = `Person ${container.children.length + 1}`;
+            input.dataset.index = container.children.length;
+            container.appendChild(input);
+            input.focus();
+        }
+
+        function savePeopleNames() {
+            const inputs = document.querySelectorAll('.name-input');
+            const newPeople = [];
+            
+            inputs.forEach(input => {
+                const name = input.value.trim();
+                if (name) {
+                    newPeople.push(name);
+                }
+            });
+            
+            if (newPeople.length === 0) {
+                showToast('Please add at least one person');
+                return;
+            }
+            
+            customPeople = newPeople;
+            showToast('People names saved successfully!');
+            
+            // Go back to people category to show updated names
+            setTimeout(() => {
+                showCategory('people');
+                // Reset active state
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector('.category-btn[onclick="showCategory(\'people\')"]').classList.add('active');
+            }, 1000);
+        }
+
+        function cancelEdit() {
+            // Go back to basic category
+            showCategory('basic');
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('.category-btn[onclick="showCategory(\'basic\')"]').classList.add('active');
         }
 
         function addPhrase(phrase) {
