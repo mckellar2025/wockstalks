@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <meta <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -390,21 +390,15 @@
         ];
         function loadPeople() {
             if (customPeople.length === 0) {
-                const stored = localStorage.getItem('customPeople');
-                if (stored) {
-                    try {
-                        customPeople = JSON.parse(stored);
-                    } catch (e) {
-                        customPeople = [...defaultPeople];
-                    }
-                } else {
-                    customPeople = [...defaultPeople];
-                }
+                // Using JavaScript variables instead of localStorage for artifact compatibility
+                customPeople = [...defaultPeople];
             }
             return customPeople;
         }
         function savePeopleToStorage() {
-            localStorage.setItem('customPeople', JSON.stringify(customPeople));
+            // Store in memory for this session
+            // Note: Changes won't persist across page reloads in artifacts
+            console.log('People saved to memory:', customPeople);
         }
         const phrases = {
             basic: [
@@ -606,14 +600,14 @@
         function addPhrase(phrase) {
             currentMessage.push(phrase);
             updateMessageDisplay();
-            event?.target && (() => {
+            if (event?.target) {
                 event.target.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
                 event.target.style.color = 'white';
                 setTimeout(() => {
                     event.target.style.background = '';
                     event.target.style.color = '';
                 }, 200);
-            })();
+            }
         }
         function updateMessageDisplay() {
             const messageElement = document.getElementById('currentMessage');
@@ -641,17 +635,10 @@
             }
         }
         function clearMessage() {
-    currentMessage = '';
-    document.getElementById('currentMessage').textContent = 'Tap phrases to build your message';
-    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.phrase-btn').forEach(btn => btn.classList.remove('active'));
-    // Reselect default category
-    let defaultBtn = document.querySelector('.category-btn[onclick*="basic"]');
-    if (defaultBtn) {
-        defaultBtn.classList.add('active');
-        showCategory('basic');
-    }
-}
+            currentMessage = []; // Fixed: Reset to empty array instead of empty string
+            updateMessageDisplay(); // Use the existing function to update display
+            showToast('Message cleared');
+        }
         function copyMessage() {
             const message = currentMessage.join(' ');
             if (message) {
