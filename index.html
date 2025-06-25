@@ -95,6 +95,11 @@
             color: white;
         }
 
+        .type-btn {
+            background: linear-gradient(135deg, #9f7aea, #805ad5);
+            color: white;
+        }
+
         .control-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -179,6 +184,161 @@
             transform: translateY(-1px);
         }
 
+        .edit-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .edit-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4a5568;
+            font-size: 2rem;
+        }
+
+        .names-input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .name-input {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            text-align: center;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .edit-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .add-person-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: linear-gradient(135deg, #a0aec0, #718096);
+            color: white;
+        }
+
+        /* Custom text input modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .custom-text-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.5rem;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .custom-text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modal-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            min-width: 120px;
+        }
+
+        .add-text-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .modal-cancel-btn {
+            background: linear-gradient(135deg, #a0aec0, #718096);
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
         .toast {
             position: fixed;
             top: 50%;
@@ -189,7 +349,7 @@
             padding: 20px 40px;
             border-radius: 15px;
             font-size: 1.3rem;
-            z-index: 1000;
+            z-index: 1001;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -216,6 +376,26 @@
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 12px;
             }
+
+            .message-controls {
+                gap: 10px;
+            }
+
+            .control-btn {
+                padding: 15px 20px;
+                font-size: 1.2rem;
+                min-width: 100px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .custom-text-input {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -232,6 +412,16 @@
                 width: 90%;
                 max-width: 300px;
             }
+
+            .message-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .control-btn {
+                width: 90%;
+                max-width: 250px;
+            }
         }
     </style>
 </head>
@@ -246,8 +436,9 @@
         </div>
         <div class="message-controls">
             <button class="control-btn speak-btn" onclick="speakMessage()">🔊 Speak</button>
-            <button class="control-btn clear-btn" onclick="clearMessage()">🗑️ Clear</button>
+            <button class="control-btn type-btn" onclick="showCustomTextModal()">⌨️ Type</button>
             <button class="control-btn copy-btn" onclick="copyMessage()">📋 Copy</button>
+            <button class="control-btn clear-btn" onclick="clearMessage()">🗑️ Clear</button>
         </div>
     </div>
 
@@ -275,6 +466,23 @@
                 <button class="control-btn add-person-btn" onclick="addNewPerson()">➕ Add Person</button>
                 <button class="control-btn save-btn" onclick="savePeopleNames()">💾 Save Changes</button>
                 <button class="control-btn cancel-btn" onclick="cancelEdit()">❌ Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Text Input Modal -->
+    <div class="modal-overlay" id="customTextModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Type Your Message</h2>
+            <textarea 
+                class="custom-text-input" 
+                id="customTextInput" 
+                placeholder="Type your custom message here..."
+                rows="4"
+            ></textarea>
+            <div class="modal-controls">
+                <button class="modal-btn add-text-btn" onclick="addCustomText()">➕ Add to Message</button>
+                <button class="modal-btn modal-cancel-btn" onclick="hideCustomTextModal()">❌ Cancel</button>
             </div>
         </div>
     </div>
@@ -501,6 +709,41 @@
             document.querySelector('.category-btn[onclick="showCategory(\'basic\')"]').classList.add('active');
         }
 
+        // Custom text input functions
+        function showCustomTextModal() {
+            const modal = document.getElementById('customTextModal');
+            const input = document.getElementById('customTextInput');
+            modal.classList.add('show');
+            
+            // Focus on the input after a short delay to ensure modal is visible
+            setTimeout(() => {
+                input.focus();
+            }, 100);
+        }
+
+        function hideCustomTextModal() {
+            const modal = document.getElementById('customTextModal');
+            const input = document.getElementById('customTextInput');
+            modal.classList.remove('show');
+            input.value = ''; // Clear the input
+        }
+
+        function addCustomText() {
+            const input = document.getElementById('customTextInput');
+            const customText = input.value.trim();
+            
+            if (customText) {
+                // Split by sentences or periods to add as separate phrases if needed
+                // For now, we'll add the entire text as one phrase
+                currentMessage.push(customText);
+                updateMessageDisplay();
+                hideCustomTextModal();
+                showToast('Custom text added to message');
+            } else {
+                showToast('Please enter some text');
+            }
+        }
+
         function addPhrase(phrase) {
             currentMessage.push(phrase);
             updateMessageDisplay();
@@ -583,6 +826,26 @@
                 toast.classList.remove('show');
             }, 2000);
         }
+
+        // Handle modal keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('customTextModal');
+            if (modal.classList.contains('show')) {
+                if (e.key === 'Escape') {
+                    hideCustomTextModal();
+                } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    // Ctrl+Enter or Cmd+Enter to add text
+                    addCustomText();
+                }
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('customTextModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideCustomTextModal();
+            }
+        });
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
