@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Wocks Talks</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -21,7 +16,6 @@
             -webkit-user-select: none;
             user-select: none;
         }
-
         .header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -29,13 +23,11 @@
             text-align: center;
             border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
-
         .header h1 {
             font-size: 2rem;
             color: #4a5568;
             margin-bottom: 5px;
         }
-
         .message-display {
             background: rgba(255, 255, 255, 0.95);
             margin: 15px;
@@ -45,7 +37,6 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             border: 3px solid #e2e8f0;
         }
-
         .current-message {
             font-size: 1.5rem;
             line-height: 1.3;
@@ -61,14 +52,12 @@
             justify-content: center;
             text-align: center;
         }
-
         .message-controls {
             display: flex;
             gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .control-btn {
             padding: 12px 20px;
             font-size: 1.1rem;
@@ -79,36 +68,29 @@
             font-weight: bold;
             min-width: 100px;
         }
-
         .speak-btn {
             background: linear-gradient(135deg, #48bb78, #38a169);
             color: white;
         }
-
         .clear-btn {
             background: linear-gradient(135deg, #f56565, #e53e3e);
             color: white;
         }
-
         .copy-btn {
             background: linear-gradient(135deg, #4299e1, #3182ce);
             color: white;
         }
-
         .type-btn {
             background: linear-gradient(135deg, #9f7aea, #805ad5);
             color: white;
         }
-
         .control-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
         .control-btn:active {
             transform: translateY(0);
         }
-
         .categories {
             display: flex;
             justify-content: center;
@@ -116,7 +98,6 @@
             margin: 15px;
             flex-wrap: wrap;
         }
-
         .category-btn {
             padding: 12px 18px;
             font-size: 1.1rem;
@@ -128,24 +109,20 @@
             font-weight: bold;
             color: #4a5568;
         }
-
         .category-btn.active {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border-color: #667eea;
         }
-
         .category-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-
         .phrases-container {
             flex: 1;
             padding: 15px;
             overflow-y: auto;
         }
-
         .phrases-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -153,7 +130,6 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-
         .phrase-btn {
             padding: 20px 15px;
             font-size: 1.3rem;
@@ -171,42 +147,36 @@
             align-items: center;
             justify-content: center;
         }
-
         .phrase-btn:hover {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             border-color: #667eea;
         }
-
         .phrase-btn:active {
             transform: translateY(-1px);
         }
-
         .edit-container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.95);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-
         .edit-container h2 {
             text-align: center;
             margin-bottom: 25px;
             color: #4a5568;
             font-size: 1.7rem;
         }
-
         .names-input-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 12px;
             margin-bottom: 25px;
         }
-
         .name-input {
             padding: 12px;
             font-size: 1.1rem;
@@ -215,43 +185,34 @@
             background: white;
             text-align: center;
         }
-
         .name-input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-
         .edit-controls {
             display: flex;
             gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .add-person-btn {
             background: linear-gradient(135deg, #48bb78, #38a169);
             color: white;
         }
-
         .save-btn {
             background: linear-gradient(135deg, #4299e1, #3182ce);
             color: white;
         }
-
         .cancel-btn {
             background: linear-gradient(135deg, #a0aec0, #718096);
             color: white;
         }
-
         /* Custom text input modal styles */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -260,34 +221,29 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-
         .modal-overlay.show {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-content {
             background: white;
             padding: 30px;
             border-radius: 15px;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
-
         .modal-overlay.show .modal-content {
             transform: scale(1);
         }
-
         .modal-title {
             font-size: 1.6rem;
             color: #4a5568;
             text-align: center;
             margin-bottom: 25px;
         }
-
         .custom-text-input {
             width: 100%;
             padding: 15px;
@@ -299,20 +255,17 @@
             min-height: 70px;
             font-family: inherit;
         }
-
         .custom-text-input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-
         .modal-controls {
             display: flex;
             gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .modal-btn {
             padding: 12px 25px;
             font-size: 1.1rem;
@@ -323,28 +276,24 @@
             font-weight: bold;
             min-width: 100px;
         }
-
         .add-text-btn {
             background: linear-gradient(135deg, #48bb78, #38a169);
             color: white;
         }
-
         .modal-cancel-btn {
             background: linear-gradient(135deg, #a0aec0, #718096);
             color: white;
         }
-
         .modal-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
         .toast {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0,0,0,0.9);
             color: white;
             padding: 15px 30px;
             border-radius: 12px;
@@ -353,76 +302,23 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
-        .toast.show {
-            opacity: 1;
-        }
-
+        .toast.show { opacity: 1; }
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .current-message {
-                font-size: 1.3rem;
-            }
-            
-            .phrase-btn {
-                font-size: 1.1rem;
-                padding: 15px 12px;
-                min-height: 60px;
-            }
-            
-            .phrases-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-                gap: 10px;
-            }
-
-            .message-controls {
-                gap: 8px;
-            }
-
-            .control-btn {
-                padding: 10px 15px;
-                font-size: 1rem;
-                min-width: 85px;
-            }
-
-            .modal-content {
-                padding: 25px 15px;
-                margin: 15px;
-            }
-
-            .custom-text-input {
-                font-size: 1.1rem;
-                padding: 12px;
-            }
+            .header h1 { font-size: 1.8rem; }
+            .current-message { font-size: 1.3rem; }
+            .phrase-btn { font-size: 1.1rem; padding: 15px 12px; min-height: 60px; }
+            .phrases-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+            .message-controls { gap: 8px; }
+            .control-btn { padding: 10px 15px; font-size: 1rem; min-width: 85px; }
+            .modal-content { padding: 25px 15px; margin: 15px; }
+            .custom-text-input { font-size: 1.1rem; padding: 12px; }
         }
-
         @media (max-width: 480px) {
-            .phrases-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .categories {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .category-btn {
-                width: 90%;
-                max-width: 300px;
-            }
-
-            .message-controls {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .control-btn {
-                width: 90%;
-                max-width: 200px;
-            }
+            .phrases-grid { grid-template-columns: repeat(2, 1fr); }
+            .categories { flex-direction: column; align-items: center; }
+            .category-btn { width: 90%; max-width: 300px; }
+            .message-controls { flex-direction: column; align-items: center; }
+            .control-btn { width: 90%; max-width: 200px; }
         }
     </style>
 </head>
@@ -430,7 +326,6 @@
     <div class="header">
         <h1>Wocks Talks</h1>
     </div>
-
     <div class="message-display">
         <div class="current-message" id="currentMessage">
             Tap phrases to build your message
@@ -442,22 +337,19 @@
             <button class="control-btn clear-btn" onclick="clearMessage()">🗑️ Clear</button>
         </div>
     </div>
-
     <div class="categories">
-        <button class="category-btn active" onclick="showCategory('basic')">Basic Needs</button>
-        <button class="category-btn" onclick="showCategory('feelings')">Feelings</button>
-        <button class="category-btn" onclick="showCategory('help')">Help & Care</button>
-        <button class="category-btn" onclick="showCategory('people')">People</button>
-        <button class="category-btn" onclick="showCategory('questions')">Who/What/Where/When</button>
-        <button class="category-btn" onclick="showCategory('social')">Social</button>
-        <button class="category-btn edit-btn" onclick="showEditPeople()">✏️ Edit People</button>
+        <button class="category-btn active" onclick="showCategory('basic', event)">Basic Needs</button>
+        <button class="category-btn" onclick="showCategory('feelings', event)">Feelings</button>
+        <button class="category-btn" onclick="showCategory('help', event)">Help & Care</button>
+        <button class="category-btn" onclick="showCategory('people', event)">People</button>
+        <button class="category-btn" onclick="showCategory('questions', event)">Who/What/Where/When</button>
+        <button class="category-btn" onclick="showCategory('social', event)">Social</button>
+        <button class="category-btn edit-btn" onclick="showEditPeople(event)">✏️ Edit People</button>
     </div>
-
     <div class="phrases-container">
         <div class="phrases-grid" id="phrasesGrid">
             <!-- Phrases will be populated by JavaScript -->
         </div>
-        
         <div class="edit-container" id="editContainer" style="display: none;">
             <h2>Edit People Names</h2>
             <div class="names-input-grid" id="namesInputGrid">
@@ -470,7 +362,6 @@
             </div>
         </div>
     </div>
-
     <!-- Custom Text Input Modal -->
     <div class="modal-overlay" id="customTextModal">
         <div class="modal-content">
@@ -487,29 +378,34 @@
             </div>
         </div>
     </div>
-
     <div class="toast" id="toast"></div>
-
     <script>
         let currentMessage = [];
         let currentCategory = 'basic';
         let customPeople = [];
-
-        // Default people names
         const defaultPeople = [
             "Donna", "Jason", "Ashlee", "Hayley", "Justin", "Ashley", 
             "Andrew", "Isaac", "Jenn", "Jeff", "Dylan", "Nora", 
             "Clara", "John", "Adam"
         ];
-
-        // Load custom people from memory or use defaults
         function loadPeople() {
             if (customPeople.length === 0) {
-                customPeople = [...defaultPeople];
+                const stored = localStorage.getItem('customPeople');
+                if (stored) {
+                    try {
+                        customPeople = JSON.parse(stored);
+                    } catch (e) {
+                        customPeople = [...defaultPeople];
+                    }
+                } else {
+                    customPeople = [...defaultPeople];
+                }
             }
             return customPeople;
         }
-
+        function savePeopleToStorage() {
+            localStorage.setItem('customPeople', JSON.stringify(customPeople));
+        }
         const phrases = {
             basic: [
                 "RELAX",
@@ -557,9 +453,7 @@
                 "Turn on the light",
                 "Turn off the light"
             ],
-            people: function() {
-                return loadPeople();
-            },
+            people: function() { return loadPeople(); },
             questions: [
                 "Who is",
                 "What is",
@@ -601,26 +495,22 @@
                 "I want to go home"
             ]
         };
-
-        function showCategory(category) {
+        function showCategory(category, event) {
             currentCategory = category;
-            
-            // Hide edit container
             document.getElementById('editContainer').style.display = 'none';
             document.getElementById('phrasesGrid').style.display = 'grid';
-            
-            // Update category buttons
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
-            
-            // Update phrases
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                let btn = document.querySelector(`.category-btn[onclick="showCategory('${category}', event)"]`);
+                if (btn) btn.classList.add('active');
+            }
             const phrasesGrid = document.getElementById('phrasesGrid');
             phrasesGrid.innerHTML = '';
-            
             const categoryPhrases = typeof phrases[category] === 'function' ? phrases[category]() : phrases[category];
-            
             categoryPhrases.forEach(phrase => {
                 const btn = document.createElement('button');
                 btn.className = 'phrase-btn';
@@ -629,28 +519,24 @@
                 phrasesGrid.appendChild(btn);
             });
         }
-
-        function showEditPeople() {
-            // Hide phrases grid and show edit container
+        function showEditPeople(event) {
             document.getElementById('phrasesGrid').style.display = 'none';
             document.getElementById('editContainer').style.display = 'block';
-            
-            // Update category buttons
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
-            
-            // Populate input fields
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                let btn = document.querySelector('.edit-btn');
+                if (btn) btn.classList.add('active');
+            }
             populateNameInputs();
         }
-
         function populateNameInputs() {
             const container = document.getElementById('namesInputGrid');
             container.innerHTML = '';
-            
             const currentPeople = loadPeople();
-            
             currentPeople.forEach((name, index) => {
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -661,7 +547,6 @@
                 container.appendChild(input);
             });
         }
-
         function addNewPerson() {
             const container = document.getElementById('namesInputGrid');
             const input = document.createElement('input');
@@ -673,72 +558,43 @@
             container.appendChild(input);
             input.focus();
         }
-
         function savePeopleNames() {
             const inputs = document.querySelectorAll('.name-input');
             const newPeople = [];
-            
             inputs.forEach(input => {
                 const name = input.value.trim();
-                if (name) {
-                    newPeople.push(name);
-                }
+                if (name) newPeople.push(name);
             });
-            
             if (newPeople.length === 0) {
                 showToast('Please add at least one person');
                 return;
             }
-            
             customPeople = newPeople;
+            savePeopleToStorage();
             showToast('People names saved successfully!');
-            
-            // Go back to people category to show updated names
             setTimeout(() => {
                 showCategory('people');
-                // Reset active state
-                document.querySelectorAll('.category-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                document.querySelector('.category-btn[onclick="showCategory(\'people\')"]').classList.add('active');
             }, 1000);
         }
-
         function cancelEdit() {
-            // Go back to basic category
             showCategory('basic');
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector('.category-btn[onclick="showCategory(\'basic\')"]').classList.add('active');
         }
-
-        // Custom text input functions
         function showCustomTextModal() {
             const modal = document.getElementById('customTextModal');
             const input = document.getElementById('customTextInput');
             modal.classList.add('show');
-            
-            // Focus on the input after a short delay to ensure modal is visible
-            setTimeout(() => {
-                input.focus();
-            }, 100);
+            setTimeout(() => { input.focus(); }, 100);
         }
-
         function hideCustomTextModal() {
             const modal = document.getElementById('customTextModal');
             const input = document.getElementById('customTextInput');
             modal.classList.remove('show');
-            input.value = ''; // Clear the input
+            input.value = '';
         }
-
         function addCustomText() {
             const input = document.getElementById('customTextInput');
             const customText = input.value.trim();
-            
             if (customText) {
-                // Split by sentences or periods to add as separate phrases if needed
-                // For now, we'll add the entire text as one phrase
                 currentMessage.push(customText);
                 updateMessageDisplay();
                 hideCustomTextModal();
@@ -747,20 +603,18 @@
                 showToast('Please enter some text');
             }
         }
-
         function addPhrase(phrase) {
             currentMessage.push(phrase);
             updateMessageDisplay();
-            
-            // Visual feedback
-            event.target.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
-            event.target.style.color = 'white';
-            setTimeout(() => {
-                event.target.style.background = '';
-                event.target.style.color = '';
-            }, 200);
+            event?.target && (() => {
+                event.target.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                event.target.style.color = 'white';
+                setTimeout(() => {
+                    event.target.style.background = '';
+                    event.target.style.color = '';
+                }, 200);
+            })();
         }
-
         function updateMessageDisplay() {
             const messageElement = document.getElementById('currentMessage');
             if (currentMessage.length === 0) {
@@ -769,7 +623,6 @@
                 messageElement.textContent = currentMessage.join(' ');
             }
         }
-
         function speakMessage() {
             const message = currentMessage.join(' ');
             if (message) {
@@ -787,13 +640,11 @@
                 showToast('No message to speak');
             }
         }
-
         function clearMessage() {
             currentMessage = [];
             updateMessageDisplay();
             showToast('Message cleared');
         }
-
         function copyMessage() {
             const message = currentMessage.join(' ');
             if (message) {
@@ -804,7 +655,6 @@
                         showToast('Could not copy message');
                     });
                 } else {
-                    // Fallback for older browsers
                     const textArea = document.createElement('textarea');
                     textArea.value = message;
                     document.body.appendChild(textArea);
@@ -821,7 +671,6 @@
                 showToast('No message to copy');
             }
         }
-
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -830,32 +679,23 @@
                 toast.classList.remove('show');
             }, 2000);
         }
-
-        // Handle modal keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             const modal = document.getElementById('customTextModal');
             if (modal.classList.contains('show')) {
                 if (e.key === 'Escape') {
                     hideCustomTextModal();
                 } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                    // Ctrl+Enter or Cmd+Enter to add text
                     addCustomText();
                 }
             }
         });
-
-        // Close modal when clicking outside
         document.getElementById('customTextModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 hideCustomTextModal();
             }
         });
-
-        // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             showCategory('basic');
-            
-            // Prevent zoom on double tap
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function(event) {
                 const now = (new Date()).getTime();
@@ -865,8 +705,6 @@
                 lastTouchEnd = now;
             }, false);
         });
-
-        // Handle back button on mobile
         window.addEventListener('beforeunload', function(e) {
             if (currentMessage.length > 0) {
                 e.preventDefault();
